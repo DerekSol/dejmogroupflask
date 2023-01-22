@@ -199,6 +199,7 @@ class User(db.Model):
 
 # Builds working data for testing
 def initUsers():
+    print("INIT USERS")
     """Create database and tables"""
     db.create_all()
     """Tester data for table"""
