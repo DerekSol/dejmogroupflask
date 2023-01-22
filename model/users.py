@@ -212,6 +212,7 @@ def initUsers():
     users = [u1, u2, u3, u4, u5]
 
     """Builds sample user/note(s) data"""
+
     for user in users:
         try:
             '''add a few 1 to 4 notes per user'''
