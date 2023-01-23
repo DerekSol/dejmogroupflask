@@ -9,7 +9,6 @@ from __init__ import app  # Definitions initialization
 from model.users import initUsers
 from model.fitness import initUsers
 from api.user import user_api # Blueprint import api definition
-from api.workout import workout_api # Blueprint import api definition
 
 app.register_blueprint(user_api) # register api routes
 
