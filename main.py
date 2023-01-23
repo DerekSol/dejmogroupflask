@@ -10,7 +10,7 @@ from model.users import initUsers
 from model.fitness import initUsers
 from api.user import user_api # Blueprint import api definition
 
-app.register_blueprint(user_api) # register api routes
+app.register_blueprint(user_api) # register api routes  
 
 @app.errorhandler(404)  # catch for URL not found
 def page_not_found(e):
