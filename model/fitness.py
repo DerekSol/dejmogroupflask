@@ -20,11 +20,11 @@ class fitness(db.Model):
     first_name = db.Column(db.String(255), unique=False, nullable=False)
     last_name = db.Column(db.String(255), unique=False, nullable=False)
     email = db.Column(db.String(255), unique=False, nullable=False)
-    phone = db.Column(db.Integer, primary_key=True)
+    phone = db.Column(db.String(255), primary_key=True)
     calories = db.Column(db.Integer, primary_key=True)
-    carbs = db.Column(db.Integer, primary_key=True)
-    sugar = db.Column(db.Integer, primary_key=True)
-    fat = db.Column(db.Integer, primary_key=True)
+    carbs = db.Column(db.String(255), primary_key=True)
+    sugar = db.Column(db.String(255), primary_key=True)
+    fat = db.Column(db.String(255), primary_key=True)
 
     # Define a relationship in Notes Schema to userID who originates the note, many-to-one (many notes to one user)
     # Constructor of a Notes object, initializes of instance variables within object
