@@ -7,26 +7,36 @@ import json
 from __init__ import app, db
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash, check_password_hash
-
+from flask_login import UserMixin
 
 ''' Tutorial: https://www.sqlalchemy.org/library.html#tutorials, try to get into Python shell and follow along '''
 
 # Define the Post class to manage actions in 'posts' table,  with a relationship to 'users' table
-class Post(db.Model):
-    __tablename__ = 'posts'
+class fitness(UserMixin,db.Model):
+    __tablename__ = 'fitness_users'
 
     # Define the Notes schema
-    id = db.Column(db.Integer, primary_key=True)
-    note = db.Column(db.Text, unique=False, nullable=False)
-    image = db.Column(db.String, unique=False)
-    # Define a relationship in Notes Schema to userID who originates the note, many-to-one (many notes to one user)
-    userID = db.Column(db.Integer, db.ForeignKey('users.id'))
+    contact_id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String(255), unique=False, nullable=False)
+    last_name = db.Column(db.String(255), unique=False, nullable=False)
+    email = db.Column(db.String(255), unique=False, nullable=False)
+    phone = db.Column(db.Integer, primary_key=True)
+    calories = db.Column(db.Integer, primary_key=True)
+    carbs = db.Column(db.Integer, primary_key=True)
+    sugar = db.Column(db.Integer, primary_key=True)
+    fat = db.Column(db.Integer, primary_key=True)
 
+    # Define a relationship in Notes Schema to userID who originates the note, many-to-one (many notes to one user)
     # Constructor of a Notes object, initializes of instance variables within object
-    def __init__(self, id, note, image):
-        self.userID = id
-        self.note = note
-        self.image = image
+    def __init__(self, first="Martin", last="Nguyen", email="martinsupercell06@gmail.com", phone=8583567673, calories=2500, carbs=75, sugar=20, fat=20):
+        self.first_name = first
+        self.last_name = last
+        self.email = email
+        self.phone = phone
+        self.calories = calories
+        self.carbs = carbs
+        self.sugars = sugar
+        self.fat = fat
 
     # Returns a string representation of the Notes object, similar to java toString()
     # returns string
