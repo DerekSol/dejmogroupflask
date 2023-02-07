@@ -61,3 +61,5 @@ class BodyWeightLossCalculator:
         daily_carbohydrate = self.weight * carbohydrate_ratio
         # Calculate daily caloric deficit
         daily_caloric_deficit = self.calculate_daily_
+        daily_caloric_intake = self.calculate_daily_intake
+        daily_caloric_burned = self.calculate_daily_burned 
