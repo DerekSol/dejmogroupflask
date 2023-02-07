@@ -16,7 +16,6 @@ class fitness(db.Model):
     __tablename__ = 'fitness_users'
 
     # Define the Notes schema
-    contact_id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(255), unique=False, nullable=False)
     last_name = db.Column(db.String(255), unique=False, nullable=False)
     email = db.Column(db.String(255), unique=False, nullable=False)
