@@ -1,112 +1,132 @@
-""" database dependencies to support sqliteDB examples """
-from random import randrange
-from datetime import date
-import os, base64
-import json
+from sqlalchemy import Column, Integer, String
+from __init__ import db
+import random
 
-from __init__ import app, db
-from sqlalchemy.exc import IntegrityError
-from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import UserMixin
 
-''' Tutorial: https://www.sqlalchemy.org/library.html#tutorials, try to get into Python shell and follow along '''
+class FitnessEntry(db.Model):
+    __tablename__ = "diets"
 
-# Define the Post class to manage actions in 'posts' table,  with a relationship to 'users' table
-class fitness(db.Model):
-    __tablename__ = 'fitness_users'
+    id = Column(Integer, primary_key=True)
+    _username = Column(String(255), nullable=False)
+    _diet_name = Column(String(255), nullable=False)
+    _calories = Column(Integer, nullable=False)
+    _protein = Column(Integer, nullable=False)
+    _fat = Column(Integer, nullable=False)
+    _carbs = Column(Integer, nullable=False)
+    _extra_notes = Column(String(255), nullable=False)
 
-    # Define the Notes schema
-    first_name = db.Column(db.String(255), unique=False, nullable=False)
-    last_name = db.Column(db.String(255), unique=False, nullable=False)
-    email = db.Column(db.String(255), unique=False, nullable=False)
-    phone = db.Column(db.String(255), primary_key=True)
-    calories = db.Column(db.Integer, primary_key=True)
-    carbs = db.Column(db.String(255), primary_key=True)
-    sugar = db.Column(db.String(255), primary_key=True)
-    fat = db.Column(db.String(255), primary_key=True)
+    def __init__(self, username, diet_name, calories, protein, fat, carbs, extra_notes):
+        self._username = username
+        self._diet_name = diet_name
+        self._calories = calories
+        self._protein = protein
+        self._fat = fat
+        self._carbs = carbs
+        self._extra_notes = extra_notes
 
-    # Define a relationship in Notes Schema to userID who originates the note, many-to-one (many notes to one user)
-    # Constructor of a Notes object, initializes of instance variables within object
-    def __init__(self, first="Martin", last="Nguyen", email="martinsupercell06@gmail.com", phone=8583567673, calories=2500, carbs=75, sugar=20, fat=20):
-        self.first_name = first
-        self.last_name = last
-        self.email = email
-        self.phone = phone
-        self.calories = calories
-        self.carbs = carbs
-        self.sugars = sugar
-        self.fat = fat
-
-    # Returns a string representation of the Notes object, similar to java toString()
-    # returns string
     def __repr__(self):
-        return "Notes(" + str(self.id) + "," + self.note + "," + str(self.userID) + ")"
+        return (
+            "<FitnessEntry(id='%s', username='%s', calories='%s', protein='%s', fat='%s', carbs='%s', extra_notes='%s')>"
+            % (
+                self.id,
+                self.username,
+                self.calories,
+                self.protein,
+                self.fat,
+                self.carbs,
+                self.extra_notes,
+            )
+        )
 
-    # CRUD create, adds a new record to the Notes table
-    # returns the object added or None in case of an error
-    def create(self):
-        try:
-            # creates a Notes object from Notes(db.Model) class, passes initializers
-            db.session.add(self)  # add prepares to persist person object to Notes table
-            db.session.commit()  # SqlAlchemy "unit of work pattern" requires a manual commit
-            return self
-        except IntegrityError:
-            db.session.remove()
-            return None
+    @property
+    def username(self):
+        return self._username
 
-    # CRUD read, returns dictionary representation of Notes object
-    # returns dictionary
-    def read(self):
-        # encode image
-        path = app.config['UPLOAD_FOLDER']
-        file = os.path.join(path, self.image)
-        file_text = open(file, 'rb')
-        file_read = file_text.read()
-        file_encode = base64.encodebytes(file_read)
-        
+    @username.setter
+    def username(self, value):
+        self._username = value
+
+    @property
+    def diet_name(self):
+        return self._diet_name
+
+    @diet_name.setter
+    def diet_name(self, value):
+        self._diet_name = value
+
+    @property
+    def calories(self):
+        return self._calories
+
+    @calories.setter
+    def calories(self, value):
+        self._calories = value
+
+    @property
+    def protein(self):
+        return self._protein
+
+    @protein.setter
+    def protein(self, value):
+        self._protein = value
+
+    @property
+    def fat(self):
+        return self._fat
+
+    @fat.setter
+    def fat(self, value):
+        self._fat = value
+
+    @property
+    def carbs(self):
+        return self._carbs
+
+    @carbs.setter
+    def carbs(self, value):
+        self._carbs = value
+
+    @property
+    def extra_notes(self):
+        return self._extra_notes
+
+    @extra_notes.setter
+    def extra_notes(self, value):
+        self._extra_notes = value
+
+    def to_dict(self):
         return {
             "id": self.id,
-            "userID": self.userID,
-            "note": self.note,
-            "image": self.image,
-            "base64": str(file_encode)
+            "username": self.username,
+            "calories": self.calories,
+            "protein": self.protein,
+            "fat": self.fat,
+            "carbs": self.carbs,
+            "extra_notes": self.extra_notes,
+            "diet_name": self.diet_name,
         }
 
 
-# Define the User class to manage actions in the 'users' table
-# -- Object Relational Mapping (ORM) is the key concept of SQLAlchemy
-# -- a.) db.Model is like an inner layer of the onion in ORM
-# -- b.) User represents data we want to store, something that is built on db.Model
-# -- c.) SQLAlchemy ORM is layer on top of SQLAlchemy Core, then SQLAlchemy engine, SQL
-
-"""Database Creation and Testing """
+def fitness_table_empty():
+    return len(db.session.query(FitnessEntry).all()) == 0
 
 
-# Builds working data for testing
-def initUsers():
-    print("INIT USERS")
-    """Create database and tables"""
-    db.create_all()
-    """Tester data for table"""
-    u1 = fitness(name='Thomas Edison', uid='toby', password='123toby', dob=date(1847, 2, 11))
-    u2 = fitness(name='Nicholas Tesla', uid='niko', password='123niko')
-    u3 = fitness(name='Alexander Graham Bell', uid='lex', password='123lex')
-    u4 = fitness(name='Eli Whitney', uid='whit', password='123whit')
-    u5 = fitness(name='John Mortensen', uid='jm1021', dob=date(1959, 10, 21))
+def init_diets():
+    if not fitness_table_empty():
+        return
 
-    users = [u1, u2, u3, u4, u5]
+    entry1 = FitnessEntry("Martin", "Cutting", 2000, 150, 70, 150, "had a big lunch")
+    entry2 = FitnessEntry(
+        "Ethan", "Bulking", 1700, 120, 50, 100, "ate a lot of veggies"
+    )
+    entry3 = FitnessEntry("Derek", "Training", 1500, 200, 80, 200, "had a heavy dinner")
 
-    """Builds sample user/note(s) data"""
+    fitness_entries = [entry1, entry2, entry3]
 
-    for user in users:
+    for entry in fitness_entries:
         try:
-            '''add a few 1 to 4 notes per user'''
-            for num in range(randrange(1, 4)):
-                note = "#### " + user.name + " note " + str(num) + ". \n Generated by test data."
-                user.posts.append(Post(id=user.id, note=note, image='ncs_logo.png'))
-            '''add user/post data to table'''
-            user.create()
-        except IntegrityError:
-            '''fails with bad or duplicate data'''
-            db.session.remove()
-            print(f"Records exist, duplicate email, or error: {user.uid}")
+            db.session.add(entry)
+            db.session.commit()
+        except Exception as e:
+            print("error while creating entries: " + str(e))
+            db.session.rollback()
