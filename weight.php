@@ -1,7 +1,7 @@
 <?php
 // Connect to the database
-$servername = "http://localhost:4001/fitness_review/bodyweightcalc";
-$username = "Ethan2806";
+$servername = "localhost";
+$username = "username";
 $password = "password";
 $dbname = "myDB";
 
