@@ -24,7 +24,6 @@ def stub():
     return render_template("stub.html")
 @app.before_first_request
 def activate_job():
-    with app.app_context():
         db.init_app(app)
         db.create_all()
         print("test")
