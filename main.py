@@ -39,7 +39,7 @@ def stub():
 def activate_job():
         db.init_app(app)
 
-    with app.app_context():
+with app.app_context():
         db.create_all()
         print("test")
         initUsers()
@@ -49,7 +49,7 @@ def activate_job():
 
 # this runs the application on the development server
 if __name__ == "__main__":
-    db.init_app(app)
+ 
     # change name for testing
     from flask_cors import CORS
 
