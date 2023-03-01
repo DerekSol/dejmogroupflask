@@ -37,7 +37,7 @@ def stub():
 
 @app.before_first_request
 def activate_job():
-    
+
     with app.app_context():
         db.create_all()
         print("test")
