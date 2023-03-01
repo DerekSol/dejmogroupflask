@@ -37,11 +37,9 @@ def stub():
 
 @app.before_first_request
 def activate_job():
-<<<<<<< HEAD
         db.init_app(app)
-=======
+
     with app.app_context():
->>>>>>> cd9b6ab947711db43868c515321e5c1f21ec4143
         db.create_all()
         print("test")
         initUsers()
